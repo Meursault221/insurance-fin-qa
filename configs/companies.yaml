@@ -1,0 +1,153 @@
+# ============================================================
+# 10 家上市保险公司元数据
+#
+# 用途：
+#   1. 脚本按文件名自动识别 company / report_name / 页码来源标签
+#   2. 第二阶段建索引时按 company 做过滤
+#
+# ⚠️ 注意：
+#   - stock_codes 请你在放 PDF 之前**核对一遍**（尤其港股代码）。
+#     本文件里的代码是初始草稿，未逐一到交易所页面验证，
+#     已用 verified: false 标记，核对后改成 true。
+#   - report_name 里 A股用简体《2025年年度报告》，
+#     港股用《2025年報》/《2025年年報》，按你实际下载到的 PDF 封面填写。
+#   - 所有 *_url 字段留空，不要编造。你下载后把真实来源 URL 填进去，
+#     最终报告的“来源可追溯”就靠它。
+# ============================================================
+
+meta:
+  report_year: 2025
+  report_type: annual          # annual | semi_annual
+  report_name_default: "2025年年度报告"
+
+companies:
+
+  - key: pingan                 # 用于文件名前缀，全小写英文/拼音
+    company: 中国平安
+    company_full: 中国平安保险（集团）股份有限公司
+    market: A+H
+    exchange: 上海证券交易所 / 香港交易所
+    stock_codes: ["601318.SH", "2318.HK"]
+    report_name: "2025年年度报告"
+    expected_filename: "pingan_2025_annual.pdf"
+    primary_source: 中国平安官网投资者关系
+    # 直接 PDF（平安官网 app_upload）
+    source_url: "https://www.pingan.com/app_upload/images/info/upload/17e8f0e4-4bd5-4f51-8415-037439c35ec6.pdf"
+    # 落地页（稳定入口，PDF 若失效从这里重新找）
+    source_page: "https://www.pingan.cn/ir/financial-report.shtml"
+    # 下载校验记录
+    downloaded_at: "2026-09-28"
+    file_sha256: "860c455bbad9be59d3d1bf64bf683733feb79157212532df44b91d49a0b03c2a"
+    page_count: 370
+    file_size_bytes: 9497402
+    # 股票代码已在年报正文第 5 页核对：2318.HK / 601318.SH
+    verified: true
+    verified_note: "股票代码经年报正文第5页确认"
+
+  - key: china_life
+    company: 中国人寿
+    company_full: 中国人寿保险股份有限公司
+    market: A+H
+    exchange: 上海证券交易所 / 香港交易所
+    stock_codes: ["601628.SH", "2628.HK"]
+    report_name: "2025年年度报告"
+    expected_filename: "china_life_2025_annual.pdf"
+    primary_source: 上交所 / 巨潮资讯网
+    source_url: ""
+    verified: false
+
+  - key: cpic
+    company: 中国太保
+    company_full: 中国太平洋保险（集团）股份有限公司
+    market: A+H
+    exchange: 上海证券交易所 / 香港交易所
+    stock_codes: ["601601.SH", "2601.HK"]
+    report_name: "2025年年度报告"
+    expected_filename: "cpic_2025_annual.pdf"
+    primary_source: 上交所 / 巨潮资讯网
+    source_url: ""
+    verified: false
+
+  - key: picc
+    company: 中国人保
+    company_full: 中国人民保险集团股份有限公司
+    market: A+H
+    exchange: 上海证券交易所 / 香港交易所
+    stock_codes: ["601319.SH", "1339.HK"]
+    report_name: "2025年年度报告"
+    expected_filename: "picc_2025_annual.pdf"
+    primary_source: 上交所 / 巨潮资讯网
+    source_url: ""
+    verified: false
+
+  - key: new_china_life
+    company: 新华保险
+    company_full: 新华人寿保险股份有限公司
+    market: A+H
+    exchange: 上海证券交易所 / 香港交易所
+    stock_codes: ["601336.SH", "1336.HK"]
+    report_name: "2025年年度报告"
+    expected_filename: "new_china_life_2025_annual.pdf"
+    primary_source: 上交所 / 巨潮资讯网
+    source_url: ""
+    verified: false
+
+  - key: china_taiping
+    company: 中国太平
+    company_full: 中国太平保险控股有限公司
+    market: H
+    exchange: 香港交易所（披露易）
+    stock_codes: ["0966.HK"]
+    report_name: "2025年報"
+    expected_filename: "china_taiping_2025_annual.pdf"
+    primary_source: 港交所披露易 HKEXnews
+    source_url: ""
+    verified: false
+
+  - key: china_re
+    company: 中国再保险
+    company_full: 中国再保险（集团）股份有限公司
+    market: H
+    exchange: 香港交易所（披露易）
+    stock_codes: ["1508.HK"]
+    report_name: "2025年報"
+    expected_filename: "china_re_2025_annual.pdf"
+    primary_source: 港交所披露易 HKEXnews
+    source_url: ""
+    verified: false
+
+  - key: sunshine
+    company: 阳光保险
+    company_full: 阳光保险集团股份有限公司
+    market: H
+    exchange: 香港交易所（披露易）
+    stock_codes: ["6963.HK"]
+    report_name: "2025年報"
+    expected_filename: "sunshine_2025_annual.pdf"
+    primary_source: 港交所披露易 HKEXnews
+    source_url: ""
+    verified: false
+
+  - key: zhongan
+    company: 众安在线
+    company_full: 众安在线财产保险股份有限公司
+    market: H
+    exchange: 香港交易所（披露易）
+    stock_codes: ["6060.HK"]
+    report_name: "2025年報"
+    expected_filename: "zhongan_2025_annual.pdf"
+    primary_source: 港交所披露易 HKEXnews
+    source_url: ""
+    verified: false
+
+  - key: picc_pc
+    company: 中国财险
+    company_full: 中国人民财产保险股份有限公司
+    market: H
+    exchange: 香港交易所（披露易）
+    stock_codes: ["2328.HK"]
+    report_name: "2025年報"
+    expected_filename: "picc_pc_2025_annual.pdf"
+    primary_source: 港交所披露易 HKEXnews
+    source_url: ""
+    verified: false

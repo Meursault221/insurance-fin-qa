@@ -1,0 +1,36 @@
+# --- 数据：体积大 / 有版权，不入库 ---
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+data/extracted/*
+!data/extracted/.gitkeep
+data/chunks/*
+!data/chunks/.gitkeep
+data/samples/*
+!data/samples/.gitkeep
+
+# --- 索引文件：可由脚本重建，不入库 ---
+index/**/*
+!index/**/.gitkeep
+
+# --- 第二阶段产物 ---
+web/static/screenshots/*.png
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- 编辑器 / 系统 ---
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
+~$*
+*.tmp
