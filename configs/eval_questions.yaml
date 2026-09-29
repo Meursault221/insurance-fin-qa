@@ -1,0 +1,335 @@
+# 检索层评测题目集
+#
+# targets 的页码是**从 data/chunks 里实际查出来的**，不是凭印象写的：
+# 用「该数字 + 该指标名」同时出现在同一 chunk 里作条件，扫出所有页。
+#
+# 为什么一个 target 有很多页：同一个数字在年报里会重复出现 5~8 次
+# （财务摘要、主要财务数据、董事长致辞、经营业绩讨论、财务报表、附录）。
+# 对"这个指标是多少"这类问题，**任何一页都是正确答案** —— 用户拿到
+# 财务摘要页和拿到财务报表页都算答对了。只标一页会把检索对的判成错的
+# （实测第一版只标了最初查到的那一页，把 BM25 的命中率从 52% 压到 41%）。
+#
+# pages   = 所有承载该答案的页（判定用）
+# primary = 最规范的那一页（财务摘要 / 主要财务数据），供人工核对时先看它
+#
+# expect_companies：期望自动识别出的公司。跨公司题刻意不设公司过滤，
+# 硬过滤会把另一半答案切掉。
+#
+# kind：exact 问法接近原文（BM25 主场）/ semantic 换了说法（向量主场）/ cross 跨公司
+
+meta:
+  version: 2
+  note: 页码为 PDF 物理页号，与 data/chunks/*.jsonl 的 page 字段一致
+  unit_note: 各家年报的金额单位不同（百万元/千元/亿港元），题目不预设单位，只看页码与公司
+  gold_note: pages 由「数字 + 指标名同现」扫出，覆盖该答案的全部出现页
+
+questions:
+
+  # ---------------------------------------------------------------- 中国平安
+  - id: q01
+    question: 中国平安2025年归属于母公司股东的净利润是多少？
+    kind: exact
+    expect_companies: [pingan]
+    targets:
+      - company: pingan
+        primary: 15
+        pages: [14, 15, 40, 41, 44, 83, 191, 364]
+        note: 财务摘要 p15「归属于母公司股东的净利润 134,778」（百万元）
+
+  - id: q02
+    question: 中国平安2025年末的总资产规模是多少？
+    kind: exact
+    expect_companies: [pingan]
+    targets:
+      - company: pingan
+        primary: 44
+        pages: [14, 44, 86]
+        note: 主要财务数据 p44「总资产 13,898,471」（百万元）
+
+  - id: q03
+    question: 中国平安寿险及健康险业务2025年的新业务价值是多少？
+    kind: exact
+    expect_companies: [pingan]
+    targets:
+      - company: pingan
+        primary: 15
+        pages: [10, 15, 49, 75, 76, 78, 79, 81]
+        note: p15「新业务价值 36,897」（百万元）/ p10 368.97亿元
+
+  - id: q04
+    question: 中国平安财产保险业务2025年的整体综合成本率是多少？
+    kind: exact
+    expect_companies: [pingan]
+    targets:
+      - company: pingan
+        primary: 15
+        pages: [10, 15, 53, 55, 56]
+        note: p15「综合成本率(%) 96.8」
+
+  - id: q05
+    question: 平安去年一年赚了多少钱？
+    kind: semantic
+    expect_companies: [pingan]
+    targets:
+      - company: pingan
+        primary: 15
+        pages: [14, 15, 40, 41, 44, 83, 191, 364]
+        note: 口语问法，未出现「净利润」「归属于母公司」等词
+
+  # ---------------------------------------------------------------- 中国人寿
+  - id: q06
+    question: 中国人寿2025年归属于母公司股东的净利润是多少？
+    kind: exact
+    expect_companies: [china_life]
+    targets:
+      - company: china_life
+        primary: 10
+        pages: [7, 8, 10, 14, 43, 93, 200]
+        note: p10「归属于母公司股东的净利润 154,078」（百万元）
+
+  - id: q07
+    question: 中国人寿2025年的总保费是多少？
+    kind: exact
+    expect_companies: [china_life]
+    targets:
+      - company: china_life
+        primary: 11
+        pages: [11, 13]
+        note: p11「总保费达7,298.87亿元」
+
+  - id: q08
+    question: 中国人寿2025年一年新业务价值是多少？
+    kind: exact
+    expect_companies: [china_life]
+    targets:
+      - company: china_life
+        primary: 11
+        pages: [11, 14]
+        note: p11「一年新业务价值达457.52亿元」
+
+  - id: q09
+    question: 国寿的保费规模有多大？
+    kind: semantic
+    expect_companies: [china_life]
+    targets:
+      - company: china_life
+        primary: 11
+        pages: [11, 13]
+        note: 用简称「国寿」+「保费规模」，原文写的是「总保费」
+
+  # ---------------------------------------------------------------- 中国太保
+  - id: q10
+    question: 中国太保2025年的保险服务收入是多少？
+    kind: exact
+    expect_companies: [cpic]
+    targets:
+      - company: cpic
+        primary: 25
+        pages: [25, 36]
+        note: p25/p36「保险服务收入2,889.10亿元」
+
+  - id: q11
+    question: 中国太保2025年末的总资产是多少？
+    kind: exact
+    expect_companies: [cpic]
+    targets:
+      - company: cpic
+        primary: 33
+        pages: [33, 59]
+        note: 主要财务数据 p33「总资产 3,144,767」（百万元）
+
+  - id: q12
+    question: 中国太保财产险业务2025年的承保综合成本率是多少？
+    kind: exact
+    expect_companies: [cpic]
+    targets:
+      - company: cpic
+        primary: 36
+        pages: [36, 38, 44, 46]
+        note: p36「承保综合成本率为97.6%」/ p38 太保产险 97.5%
+
+  - id: q13
+    question: 太保的资产规模有多大？
+    kind: semantic
+    expect_companies: [cpic]
+    targets:
+      - company: cpic
+        primary: 33
+        pages: [33, 59]
+        note: 用简称「太保」+「资产规模」，原文写「总资产」
+
+  # ---------------------------------------------------------------- 中国人保
+  - id: q14
+    question: 中国人保2025年末的集团总资产是多少？
+    kind: exact
+    expect_companies: [picc]
+    targets:
+      - company: picc
+        primary: 9
+        pages: [9]
+        note: p9「集團總資產20,275.92億元」
+
+  - id: q15
+    question: 中国人保2025年实现的保险服务收入是多少？
+    kind: exact
+    expect_companies: [picc]
+    targets:
+      - company: picc
+        primary: 9
+        pages: [9, 24]
+        note: p9「實現保險服務收入5,707.17億元」
+
+  # ---------------------------------------------------------------- 新华保险
+  - id: q16
+    question: 新华保险2025年归属于母公司股东的净利润是多少？
+    kind: exact
+    expect_companies: [new_china_life]
+    targets:
+      - company: new_china_life
+        primary: 28
+        pages: [7, 28, 30, 31, 123]
+        note: p28「归属于母公司股东的净利润 36,284」（百万元）/ p7 362.84亿元
+
+  - id: q17
+    question: 新华保险2025年末的总资产是多少？
+    kind: exact
+    expect_companies: [new_china_life]
+    targets:
+      - company: new_china_life
+        primary: 28
+        pages: [19, 28, 30]
+        note: p28「总资产 1,899,484」（百万元）
+
+  # ---------------------------------------------------------------- 中国太平
+  - id: q18
+    question: 中国太平2025年末的总资产是多少？
+    kind: exact
+    expect_companies: [china_taiping]
+    targets:
+      - company: china_taiping
+        primary: 29
+        pages: [18, 29, 364]
+        note: p29「總資產 1,986,586.64」（百萬港元）/ p18 19,866億港元
+
+  # ---------------------------------------------------------------- 中国再保险
+  - id: q19
+    question: 中国再保险2025年的保险服务收入是多少？
+    kind: exact
+    expect_companies: [china_re]
+    targets:
+      - company: china_re
+        primary: 8
+        pages: [7, 8, 19, 152, 210, 213]
+        note: p8「保險服務收入 103,087」（百萬元）
+
+  - id: q20
+    question: 中国再保险2025年的总保费收入是多少？
+    kind: exact
+    expect_companies: [china_re]
+    targets:
+      - company: china_re
+        primary: 21
+        pages: [21]
+        note: p21「實現總保費收入人民幣1,803.68億元」
+
+  # ---------------------------------------------------------------- 阳光保险
+  - id: q21
+    question: 阳光保险2025年的总保费收入是多少？
+    kind: exact
+    expect_companies: [sunshine]
+    targets:
+      - company: sunshine
+        primary: 17
+        pages: [14, 17]
+        note: p17「總保費收入 150,719」（百萬元）/ p14 1,507.2亿元
+
+  - id: q22
+    question: 阳光保险2025年归属于母公司股东的净利润是多少？
+    kind: exact
+    expect_companies: [sunshine]
+    targets:
+      - company: sunshine
+        primary: 17
+        pages: [14, 17, 24, 145, 149, 225]
+        note: p17「歸屬於母公司股東的淨利潤 6,307」（百萬元）/ p14 63.1亿元
+
+  # ---------------------------------------------------------------- 众安在线
+  - id: q23
+    question: 众安在线2025年的保险服务收入是多少？
+    kind: exact
+    expect_companies: [zhongan]
+    targets:
+      - company: zhongan
+        primary: 10
+        pages: [10, 26]
+        note: p10「實現保險服務收入人民幣334.85億元」
+
+  - id: q24
+    question: 众安在线2025年的承保综合成本率是多少？
+    kind: exact
+    expect_companies: [zhongan]
+    targets:
+      - company: zhongan
+        primary: 10
+        pages: [4, 10, 25, 26]
+        note: p10「承保綜合成本率為95.8%」
+
+  # ---------------------------------------------------------------- 中国财险
+  - id: q25
+    question: 中国财险2025年的保险服务收入是多少？
+    kind: exact
+    expect_companies: [picc_pc]
+    targets:
+      - company: picc_pc
+        primary: 4
+        pages: [4, 14, 94, 159, 162]
+        note: p4「保險服務收入 511,594」（百萬元）
+
+  - id: q26
+    question: 中国财险2025年末的总资产是多少？
+    kind: exact
+    expect_companies: [picc_pc]
+    targets:
+      - company: picc_pc
+        primary: 4
+        pages: [4, 23]
+        note: p4「總資產 860,498」（百萬元）/ p11 8,604.98亿元
+
+  - id: q27
+    question: 人保财险2025年的原保险保费收入是多少？
+    kind: semantic
+    expect_companies: [picc_pc]
+    targets:
+      - company: picc_pc
+        primary: 4
+        pages: [4]
+        note: 用行业通称「人保财险」指中国财险；「原保險保費收入 555,777」（百萬元）
+
+  # ---------------------------------------------------------------- 跨公司
+  - id: q28
+    question: 中国平安和中国人寿2025年的归母净利润分别是多少？
+    kind: cross
+    expect_companies: [pingan, china_life]
+    targets:
+      - company: pingan
+        primary: 15
+        pages: [14, 15, 40, 41, 44, 83, 191, 364]
+        note: 134,778
+      - company: china_life
+        primary: 10
+        pages: [7, 8, 10, 14, 43, 93, 200]
+        note: 154,078
+
+  - id: q29
+    question: 比较中国太保和新华保险2025年末的总资产规模
+    kind: cross
+    expect_companies: [cpic, new_china_life]
+    targets:
+      - company: cpic
+        primary: 33
+        pages: [33, 59]
+        note: 3,144,767
+      - company: new_china_life
+        primary: 28
+        pages: [19, 28, 30]
+        note: 1,899,484

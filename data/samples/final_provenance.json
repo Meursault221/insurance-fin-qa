@@ -1,0 +1,334 @@
+{
+  "meta": {
+    "generated_by": "scripts/build_provenance.py",
+    "report_year": 2025,
+    "company_count": 10,
+    "note": "sha256 / 页数 / 字节数均从 data/raw 下的实际 PDF 现算，不是从 configs/companies.yaml 抄录；不一致会标 FAIL 并在 checks 里给出配置中的原值。",
+    "required_fields": [
+      "company",
+      "report_year",
+      "report_name",
+      "source_url",
+      "file_sha256",
+      "page_count",
+      "local_pdf_path"
+    ]
+  },
+  "companies": [
+    {
+      "key": "pingan",
+      "company": "中国平安",
+      "company_full": "中国平安保险（集团）股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度报告",
+      "source_url": "https://www.pingan.com/app_upload/images/info/upload/17e8f0e4-4bd5-4f51-8415-037439c35ec6.pdf",
+      "source_channel": "中国平安官网投资者关系",
+      "source_title": "",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "860c455bbad9be59d3d1bf64bf683733feb79157212532df44b91d49a0b03c2a",
+      "page_count": 370,
+      "file_size_bytes": 9497402,
+      "local_pdf_path": "data/raw/pingan_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "in_fetch_report": false
+      },
+      "status": "OK",
+      "fetch_record": null
+    },
+    {
+      "key": "china_life",
+      "company": "中国人寿",
+      "company_full": "中国人寿保险股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度报告",
+      "source_url": "http://static.cninfo.com.cn/finalpage/2026-03-26/1225030448.PDF",
+      "source_channel": "上交所 / 巨潮资讯网",
+      "source_title": "中国人寿2025年年度报告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "575a833fd7b83ad3568483273645236eddb751a92ab89f7e1c09105d92cedb27",
+      "page_count": 228,
+      "file_size_bytes": 5031381,
+      "local_pdf_path": "data/raw/china_life_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "cninfo",
+        "announcement_title": "中国人寿2025年年度报告",
+        "fetch_url": "http://static.cninfo.com.cn/finalpage/2026-03-26/1225030448.PDF",
+        "detail": "5,031,381 字节"
+      }
+    },
+    {
+      "key": "cpic",
+      "company": "中国太保",
+      "company_full": "中国太平洋保险（集团）股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度报告",
+      "source_url": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225035569.PDF",
+      "source_channel": "上交所 / 巨潮资讯网",
+      "source_title": "中国太保2025年年度报告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "3787b6a6ec1bf480be2092e7bae156bd0f1d1b7f9f28bd9226d038951c788dee",
+      "page_count": 310,
+      "file_size_bytes": 13107566,
+      "local_pdf_path": "data/raw/cpic_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "cninfo",
+        "announcement_title": "中国太保2025年年度报告",
+        "fetch_url": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225035569.PDF",
+        "detail": "13,107,566 字节"
+      }
+    },
+    {
+      "key": "picc",
+      "company": "中国人保",
+      "company_full": "中国人民保险集团股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告（H股）",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800675_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews（H股年报）",
+      "source_title": "二零二五年年度報告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "4b13d20d15f5ad809eec40d9132bac0cf0f82aa636f7fd881b4d63bb8434c3c7",
+      "page_count": 335,
+      "file_size_bytes": 8436794,
+      "local_pdf_path": "data/raw/picc_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "二零二五年年度報告",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800675_c.pdf",
+        "detail": "8,436,794 字节"
+      }
+    },
+    {
+      "key": "new_china_life",
+      "company": "新华保险",
+      "company_full": "新华人寿保险股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度报告",
+      "source_url": "http://static.cninfo.com.cn/finalpage/2026-03-28/1225047616.PDF",
+      "source_channel": "上交所 / 巨潮资讯网",
+      "source_title": "新华保险2025年年度报告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "4a5d6ee54dc0a351acac6d9d3ce1d0eee6d4a388c4c36c1668a35d5ffd35c528",
+      "page_count": 295,
+      "file_size_bytes": 6694301,
+      "local_pdf_path": "data/raw/new_china_life_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "cninfo",
+        "announcement_title": "新华保险2025年年度报告",
+        "fetch_url": "http://static.cninfo.com.cn/finalpage/2026-03-28/1225047616.PDF",
+        "detail": "6,694,301 字节"
+      }
+    },
+    {
+      "key": "china_taiping",
+      "company": "中国太平",
+      "company_full": "中国太平保险控股有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800581_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews",
+      "source_title": "2025年年報",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "811778ea5ad75433d220500b1741eec092d9c817184309b37324604a47f7edce",
+      "page_count": 373,
+      "file_size_bytes": 3856068,
+      "local_pdf_path": "data/raw/china_taiping_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "2025年年報",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800581_c.pdf",
+        "detail": "3,856,068 字节"
+      }
+    },
+    {
+      "key": "china_re",
+      "company": "中国再保险",
+      "company_full": "中国再保险（集团）股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0429/2026042901793_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews",
+      "source_title": "二O二五年年度報告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "cfcd25105c0573e5d2c0e9dccd5deb9cf5ad5ea7528afe4a851b852e74f3c1a9",
+      "page_count": 370,
+      "file_size_bytes": 8205754,
+      "local_pdf_path": "data/raw/china_re_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "二O二五年年度報告",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0429/2026042901793_c.pdf",
+        "detail": "8,205,754 字节"
+      }
+    },
+    {
+      "key": "sunshine",
+      "company": "阳光保险",
+      "company_full": "阳光保险集团股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0427/2026042701602_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews",
+      "source_title": "2025年度報告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "04ec5cf39c1e1d1d8b7522f87c4f32cb87d524071a9368d82949885942385198",
+      "page_count": 290,
+      "file_size_bytes": 10940507,
+      "local_pdf_path": "data/raw/sunshine_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "2025年度報告",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0427/2026042701602_c.pdf",
+        "detail": "10,940,507 字节"
+      }
+    },
+    {
+      "key": "zhongan",
+      "company": "众安在线",
+      "company_full": "众安在线财产保险股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042803176_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews",
+      "source_title": "2025年度報告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "ea8c839b7f9fe18fc0beb7e57f49c968315b6d346f7341212353cb9ed97f2331",
+      "page_count": 187,
+      "file_size_bytes": 9420084,
+      "local_pdf_path": "data/raw/zhongan_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "2025年度報告",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042803176_c.pdf",
+        "detail": "9,420,084 字节"
+      }
+    },
+    {
+      "key": "picc_pc",
+      "company": "中国财险",
+      "company_full": "中国人民财产保险股份有限公司",
+      "report_year": 2025,
+      "report_name": "2025年年度報告",
+      "source_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0401/2026040101641_c.pdf",
+      "source_channel": "港交所披露易 HKEXnews",
+      "source_title": "2025年度報告",
+      "downloaded_at": "2026-09-28",
+      "file_sha256": "36363db8e934dcfea8124a5b9450f7a26bf13be949cb28254b51873328a126f2",
+      "page_count": 276,
+      "file_size_bytes": 4816401,
+      "local_pdf_path": "data/raw/picc_pc_2025_annual.pdf",
+      "verified": true,
+      "checks": {
+        "file_exists": true,
+        "pdf_opens": true,
+        "sha256_matches_config": true,
+        "page_count_matches_config": true,
+        "size_matches_config": true,
+        "missing_required_fields": [],
+        "fetch_url_matches_source_url": true
+      },
+      "status": "OK",
+      "fetch_record": {
+        "channel": "hkexnews",
+        "announcement_title": "2025年度報告",
+        "fetch_url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0401/2026040101641_c.pdf",
+        "detail": "4,816,401 字节"
+      }
+    }
+  ]
+}

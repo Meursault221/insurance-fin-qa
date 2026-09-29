@@ -232,12 +232,19 @@ class Chunk(DictMixin):
         return f"{self.context_prefix}\n{self.text}".strip() if self.context_prefix else self.text
 
     def citation(self, zh: bool = True) -> str:
-        """生成作业要求的来源块。"""
+        """生成作业要求的来源块。
+
+        页码格式是作业指定的「页码：XX页」，不写成「第 XX 页」——
+        引用块要能直接贴进报告，格式与要求逐字一致。
+        """
         if zh:
+            pages = (f"{self.page}页" if not self.page_end
+                     or self.page_end == self.page
+                     else f"{self.page}-{self.page_end}页")
             return (
                 f"公司：{self.company}\n"
                 f"报告：{self.report_name}\n"
-                f"页码：第 {self.page} 页" + (f"（至第 {self.page_end} 页）" if self.page_end and self.page_end != self.page else "") + "\n"
+                f"页码：{pages}\n"
                 f"章节：{self.section or '（未识别）'}"
             )
         return (

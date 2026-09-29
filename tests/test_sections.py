@@ -189,8 +189,33 @@ class TestSentenceFragment:
                               body_font_size=9.0)[0] == "paragraph"
 
     def test_固定板块名不受逗号规则影响(self):
-        for s in ["重要提示", "目录", "释义", "公司简介", "审计报告"]:
+        for s in ["重要提示", "释义", "公司简介", "审计报告"]:
             assert classify_block(s) == ("heading", 1), s
+
+    def test_繁体固定板块名也算标题(self):
+        """港股年报用繁体，词表漏了繁体会让一级标题整段漏检。"""
+        for s in ["董事會報告", "企業管治報告", "管理層討論與分析",
+                  "獨立核數師報告", "釋義", "公司簡介"]:
+            assert classify_block(s) == ("heading", 1), s
+
+    def test_第X節是繁体写法(self):
+        assert classify_block("第一節 釋義") == ("heading", 1)
+
+
+class TestNavigationNotHeading:
+    """目录页的名字不是内容章节，入栈后会把后面所有页的章节路径带偏。"""
+
+    def test_目录不算标题(self):
+        for s in ["目录", "目錄", "Contents", "TABLE OF CONTENTS"]:
+            assert classify_block(s) == ("paragraph", 0), s
+
+    def test_目录不会经标题栈污染后续章节(self):
+        """港股年报没有"第X节"来顶掉目录，它一旦入栈就一直挂在栈底。"""
+        tr = SectionTracker()
+        for t in ["目錄", "董事會報告", "（一）主要業務"]:
+            kind, lv = classify_block(t)
+            tr.update(kind, lv, t)
+        assert tr.current == "董事會報告 > （一）主要業務"
 
 
 class TestQuantityNotHeading:

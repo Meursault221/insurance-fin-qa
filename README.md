@@ -1,7 +1,8 @@
 # 基于向量检索与 BM25 的上市保险公司财报问答知识库
 
 > 课程作业 · 方向 A
-> **当前进度：第一阶段（项目基础架构）已完成。** 检索与问答页面尚未实现。
+> **当前进度：第三阶段（问答页面 + 大模型回答 + 页码引用）已完成，闭环跑通。**
+> 下一步是作业要求的 10 道题人工测试与记录。
 
 从 10 家上市保险公司的年报 PDF 里抽取带来源信息的文本与表格，
 建立「向量检索 + BM25」混合检索，做一个能提问、能回答、**每个答案都带出处**的问答页面。
@@ -13,12 +14,26 @@
 | 阶段 | 内容 | 状态 |
 |---|---|---|
 | **一** | 项目结构、PDF 解析、表格还原、切分、来源信息 | ✅ **已完成** |
-| 二 | 向量检索 + BM25 混合检索、索引落盘 | ⬜ 未开始 |
-| 三 | 问答页面、来源展示 | ⬜ 未开始 |
-| 四 | 10 道测试题 + 记录表、一页总结 PDF | ⬜ 未开始 |
+| **二** | 向量检索 + BM25 混合检索、索引落盘、检索层评测 | ✅ **已完成** |
+| **三** | 问答页面、检索 → 大模型 → 带页码引用的答案 | ✅ **已完成** |
+| 四 | 10 道测试题 + 记录表、一页总结 PDF | 🟡 检索层 29 题已完成，问答层 10 题待人工做 |
 
-**这一阶段只做了"能读、能切、能溯源"，没有下载任何真实财报，也没有实现检索。**
-仓库里唯一的 PDF 是脚本生成的**合成测试样本**，不含任何真实财务数据。
+第二阶段实测（29 道题覆盖 10 家公司，top-10）：
+
+| 检索方式 | 题目命中率 | 目标召回率 | MRR | Top-1 命中 |
+|---|---|---|---|---|
+| BM25 | 24/29 (82.8%) | 83.9% | 0.535 | 11/29 |
+| 向量 | 19/29 (65.5%) | 64.5% | 0.273 | 3/29 |
+| **混合** | **26/29 (89.7%)** | **90.3%** | **0.633** | **14/29** |
+| 公司识别 | **29/29 = 100%** | | | |
+
+设计说明、融合配置对比、已知局限见 [`docs/phase2_retrieval.md`](docs/phase2_retrieval.md)；
+逐题明细见 [`docs/qa/retrieval_eval.md`](docs/qa/retrieval_eval.md)。
+
+第三阶段在这个检索层之上接了问答大模型：问题 → 混合检索 → 命中的 chunk
+（正文 + 公司/报告/页码/章节）交给模型 → 模型写答案 → **引用块由程序从 chunk
+元数据渲染**。所以页面上显示的公司、报告、页码永远不会是模型编的。详见
+[`docs/phase3_qa.md`](docs/phase3_qa.md)。
 
 ---
 
@@ -28,7 +43,7 @@
 insurance-fin-qa/
 ├── README.md                     ← 本文件
 ├── requirements.txt              第一阶段依赖（纯 wheel，Windows 直接装）
-├── requirements-retrieval.txt    第二阶段依赖（现在不用装）
+├── requirements-retrieval.txt    第二阶段依赖（含 Windows 上 torch CPU 版装法）
 ├── pytest.ini / conftest.py      测试配置
 │
 ├── configs/
@@ -39,11 +54,11 @@ insurance-fin-qa/
 │   │   └── README.md             命名规范说明
 │   ├── extracted/                抽取产物：每份 PDF 一个结构化 JSON
 │   ├── chunks/                   切分产物：每份报告一个 JSONL
-│   └── samples/                  小样本 PDF（调试用）
+│   └── samples/                  产出物：抓取台账 / 批量校验报告 / 统一来源清单
 │
 ├── index/
-│   ├── bm25/                     第二阶段：BM25 索引
-│   └── vector/                   第二阶段：向量索引
+│   ├── bm25/                     第二阶段：BM25 倒排索引（62,954 词条）
+│   └── vector/                   第二阶段：向量索引（7507×512 float32）
 │
 ├── src/                          ⭐ 核心代码
 │   ├── schema.py                 数据结构（DocumentMeta / TextBlock / TableBlock / Chunk）
@@ -53,24 +68,45 @@ insurance-fin-qa/
 │   ├── tables.py                 表格抽取后端（PyMuPDF / pdfplumber）
 │   ├── pdf_extractor.py          ⭐ PDF → 结构化文档
 │   ├── chunker.py                ⭐ 结构化文档 → 检索单元
+│   ├── bm25.py                   第二阶段：BM25（打分前按公司布尔过滤）
+│   ├── vector_index.py           第二阶段：向量索引（BGE-small-zh）
+│   ├── hybrid.py                 第二阶段：RRF / weighted / union 融合
+│   ├── tokenize.py               第二阶段：中文分词 + 简繁归一
+│   ├── retriever.py              ⭐ 第二阶段：统一检索入口
+│   ├── llm.py                    第三阶段：大模型调用 + 防伪造核查（纯标准库）
+│   ├── qa.py                     ⭐ 第三阶段：检索 → 三层闸门 → 大模型 → 带引用答案
 │   ├── pipeline.py               单份 / 批量编排
 │   ├── pymupdf_compat.py         PyMuPDF 导入兼容
-│   └── cli.py                    命令行入口
+│   └── cli.py                    命令行入口（search / ask 子命令）
 │
 ├── scripts/
 │   ├── make_demo_pdf.py          生成合成测试 PDF（无需下载任何东西就能跑通）
-│   └── run_single_pdf.py         单份 PDF 测试脚本（可直接改常量）
+│   ├── run_single_pdf.py         单份 PDF 测试脚本（可直接改常量）
+│   ├── fetch_reports.py          从官方渠道抓年报（巨潮资讯网 / 港交所披露易）
+│   ├── record_provenance.py      把下载记录写回 configs/companies.yaml
+│   ├── phase1_batch_report.py    Phase 1.5 批量校验，产出文档质量报告
+│   ├── build_provenance.py       生成统一来源清单（现算 sha256 并与配置比对）
+│   ├── build_index.py            第二阶段：建索引（带 chunks 指纹校验）
+│   ├── eval_retrieval.py         第二阶段：检索层评测 + 融合配置对比（--sweep）
+│   └── qa_eval.py                第三阶段：问答层测试记录表（作业第四项用）
 │
-├── tests/                        117 个单元测试，全部通过
+├── tests/                        294 个单元测试，全部通过（229 + 第三阶段 65）
 │   ├── fixtures/                 测试样本（合成 PDF）
 │   └── test_*.py
 │
 ├── docs/
 │   ├── phase1_architecture.md    第一阶段设计说明（含数据流、字段表）
-│   └── data_download_guide.md    年报下载指引（交易所网站入口）
+│   ├── phase2_retrieval.md       ⭐ 第二阶段设计说明（含融合对比、已知局限）
+│   ├── phase3_qa.md              ⭐ 第三阶段设计说明（三层闸门、防伪造）
+│   ├── data_download_guide.md    年报下载指引（交易所网站入口）
+│   └── qa/                       检索层评测结果（逐题明细 + 汇总表）
 │
-└── web/                          第三阶段：问答页面
+└── web/
+    ├── app.py                    ⭐ 第三阶段：Streamlit 问答页面
+    └── README.md
 ```
+
+根目录另有 `.env.example`（大模型配置模板，复制成 `.env` 使用）。
 
 ---
 
@@ -97,9 +133,51 @@ python -m src.cli doctor
 
 `doctor` 会检查 PyMuPDF、两个表格后端、配置文件、目录是否就绪。
 
+第二阶段（混合检索）另装一份依赖。**第一行不能省** —— Windows 上 PyPI 默认给的
+torch wheel 是 CUDA 版（约 2.4GB），而本项目的向量模型跑在 CPU 上：
+
+```bash
+pip install --index-url https://download.pytorch.org/whl/cpu torch   # 约 200MB
+pip install -r requirements-retrieval.txt
+
+# 建索引（chunks 没变会自动跳过）
+python scripts/build_index.py
+
+# 试一句（这是一道评测题的原文，top-1 就是正确来源）
+python -m src.cli search "中国平安2025年归属于母公司股东的净利润是多少？" -k 5 --show-text 200
+
+# 跑检索层评测（29 道题，逐路对比）
+python scripts/eval_retrieval.py
+python scripts/eval_retrieval.py --sweep        # 外加融合配置对比
+```
+
+**不需要 faiss，也不需要 rank-bm25** —— 原因见 `requirements-retrieval.txt`。
+
+第三阶段（问答页面）多一个 `streamlit`，已经写在同一个文件里，不用再单独装：
+
+```bash
+# 配大模型（可选 —— 不配也能跑，只是不生成答案正文）
+copy .env.example .env          # Git Bash: cp .env.example .env
+# 编辑 .env，填一个 key（Anthropic 或任意 OpenAI 兼容接口都行）
+
+# 开问答页面
+streamlit run web/app.py
+```
+
+浏览器打开 <http://localhost:8501>，在输入框里提问即可。页面左侧可以调检索方式、
+材料条数、限定公司；右侧答案下面是引用来源，每条都能展开看原文片段。
+
+命令行版本（不开浏览器也能测同一套流程）：
+
+```bash
+python -m src.cli ask "中国平安2025年归属于母公司股东的净利润是多少？" -k 5 --show-text 120
+```
+
 ---
 
-## 四、怎么跑（现在还不需要任何真实 PDF）
+## 四、怎么跑
+
+前两步用一份**脚本生成的合成 PDF** 就能跑通，不需要下载任何东西。
 
 ### 步骤 1：生成一份合成测试 PDF
 
@@ -139,7 +217,7 @@ chunks     : data/chunks/demo_2025_annual.jsonl
 --- demo_2025_annual_p0001_c0003  [table] 151 字 ---
 公司：示例公司
 报告：2025年年度报告（合成样本）
-页码：第 1 页
+页码：1页
 章节：第二节 主要财务数据
 ------------------------------------------------------------------
 〔表格〕单位：人民币百万元（以下为占位数字）
@@ -176,6 +254,9 @@ python -m pytest
 | `python -m src.cli extract <pdf> --table-backend pdfplumber` | 换表格识别后端 |
 | `python -m src.cli batch` | 批量处理 `data/raw/` 下所有 PDF |
 | `python -m src.cli preview data/chunks/xxx.jsonl` | 查看已生成的 chunks |
+| `python -m src.cli search "问题"` | 第二阶段：只检索，不生成答案 |
+| `python -m src.cli ask "问题"` | 第三阶段：检索 + 大模型 + 带页码引用的答案 |
+| `streamlit run web/app.py` | 第三阶段：问答页面 |
 
 常用参数：
 
@@ -219,49 +300,50 @@ PyMuPDF 抽表格时，表格里的文字同时也会以普通文本块形式出
 
 ---
 
-## 七、下一步：你需要做什么
+## 七、数据是怎么来的
 
-### 立刻要做的
+10 家公司、2025 年年报，全部从官方渠道下载（巨潮资讯网 / 港交所披露易），
+**没有用任何第三方转载的 PDF**。每份文件的下载地址和 sha256 记在
+`configs/companies.yaml` 和 `data/samples/final_provenance.json` 里。
 
-1. **核对 `configs/companies.yaml` 里的股票代码**（现在都标着 `verified: false`）。
-   尤其港股代码，请到交易所页面确认后改成 `true`。
+```
+pingan_2025_annual.pdf            中国平安      601318.SH / 2318.HK
+china_life_2025_annual.pdf        中国人寿      601628.SH / 2628.HK
+cpic_2025_annual.pdf              中国太保      601601.SH / 2601.HK
+picc_2025_annual.pdf              中国人保      601319.SH / 1339.HK
+new_china_life_2025_annual.pdf    新华保险      601336.SH / 1336.HK
+china_taiping_2025_annual.pdf     中国太平      0966.HK
+china_re_2025_annual.pdf          中国再保险    1508.HK
+sunshine_2025_annual.pdf          阳光保险      6963.HK
+zhongan_2025_annual.pdf           众安在线      6060.HK
+picc_pc_2025_annual.pdf           中国财险      2328.HK
+```
 
-2. **下载 10 份 2025 年年度报告 PDF**，放到 `data/raw/`，按约定命名：
-   ```
-   pingan_2025_annual.pdf
-   china_life_2025_annual.pdf
-   cpic_2025_annual.pdf
-   picc_2025_annual.pdf
-   new_china_life_2025_annual.pdf
-   china_taiping_2025_annual.pdf
-   china_re_2025_annual.pdf
-   sunshine_2025_annual.pdf
-   zhongan_2025_annual.pdf
-   picc_pc_2025_annual.pdf
-   ```
-   下载入口见 `docs/data_download_guide.md`。
-   **下载后把真实 URL 填进 yaml 的 `source_url` 字段** —— 最终报告的来源可追溯性靠它。
+处理流程：`python -m src.cli extract data/raw/<file>.pdf` → `python -m src.cli batch`，
+产物在 `data/extracted/`（结构化 JSON）和 `data/chunks/`（检索单元 JSONL）。
+10 份报告合计 **7507 个 chunk**。
 
-3. **先只放 1 份，跑通再说**：
-   ```bash
-   python -m src.cli extract data/raw/pingan_2025_annual.pdf --preview 5
-   ```
-   然后**人工抽查**：
-   - 打开 `data/extracted/pingan_2025_annual.json`，随便搜一个你记得的数字，
-     确认 `page` 字段和 PDF 阅读器里显示的页码一致
-   - 看 `tables[].cells` 的行列有没有错位
-   - 看 `blocks[].section` 的章节路径对不对
+### 数据完整性
 
-4. 单份没问题了再批量：
-   ```bash
-   python -m src.cli batch
-   ```
+第三阶段开始时复核过一遍，结论写在 `docs/phase3_qa.md`：
+7507 条 chunk 正文与磁盘上的 `data/chunks/*.jsonl` **逐字节一致**（0 条不一致）；
+简繁归一（只作用于分词/向量，不改 chunk 正文）前后，
+7507 条 chunk 里 **0 条**的数字串发生变化 —— 全文 122,624 个数字串、
+443,532 个数字字符原样保留。
 
-### 需要你确认后再做的
+### 第三阶段已完成的部分
 
-- 第二阶段（混合检索）：需要装 `sentence-transformers` + `faiss`，会拉约 2GB 的 torch。
-  国内网络建议先配好镜像源再装。
-- 问答页面用 Streamlit 还是 FastAPI + 前端，你可以决定。
+- 问答页面用 **Streamlit**（`web/app.py`，一个文件，不用写前端）。
+- 已接入问答大模型，**不装任何 SDK**（标准库 `urllib` 直接发 HTTP），
+  Anthropic 和任意 OpenAI 兼容接口都支持。
+- 没配 API key 也能开页面：照常显示检索结果和引用，只是不生成答案正文。
+
+### 还剩下的（作业第四项）
+
+- **10 道题的人工测试与记录**：题目、召回内容、引用、答案已经能自动记录，
+  "答案是否正确 / 错在哪里"两列需要人工核对后填。见
+  [`docs/qa/README.md`](docs/qa/README.md)。
+- 一页总结 PDF。
 
 ---
 

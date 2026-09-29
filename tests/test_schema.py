@@ -52,7 +52,7 @@ class TestChunk:
         s = c.citation()
         assert "公司：中国平安" in s
         assert "报告：2025年年度报告" in s
-        assert "第 12 页" in s
+        assert "页码：12页" in s
         assert "第三节 管理层讨论与分析" in s
 
     def test_embed_text_带上下文前缀(self):

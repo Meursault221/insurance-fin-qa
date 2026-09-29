@@ -135,8 +135,12 @@ class _Line:
         return max(self.bbox[3] - self.bbox[1], 1.0)
 
 
-_GROUPED_NUM_TAIL = re.compile(r"\d,\d{3}$")
-_GROUPED_NUM_HEAD = re.compile(r"\d,\d{3}")
+# "上一个 span 是否以一个**完整**的千分位数结尾"（1,234 / 12,345,678）。
+# 必须是整组完整，不能只要求“以数字结尾” —— 否则 "…原保險保費收入2"
+# 这种被 span 边界切掉一半的数字也会被判成“上一个数已经结束”，
+# 于是 2 和 7,383.33 之间被插进一个空格，一个真实的数被劈成两个。
+# 中国人保 H 股年报实测 2 处（"2 7,383.33"、"4 4,729"）。
+_GROUPED_NUM_TAIL = re.compile(r"(?<![\d,])\d{1,3}(?:,\d{3})+$")
 
 
 def _join_spans(spans) -> str:
@@ -146,17 +150,17 @@ def _join_spans(spans) -> str:
     直接拼就把 "376,112 1,304,712" 粘成 "376,1121,304,712" ——
     变成一个根本不存在的数，取数时无法还原（合并股东权益变动表实测 10 处）。
 
-    只在"千分位分组数字挨着千分位分组数字"的边界补一个空格，
-    其余边界原样保留，避免把被拆开的普通词语拆出多余空格。
+    判据是"上一个 span 以一个**完整**的千分位数收尾、且下一个 span 以数字起头"。
+    "完整"这两个字是关键：中国人保 H 股年报里 "原保險保費收入27,383.33"
+    的 "2" 被单独排成一个 6.4pt 的小 span（和正文 11pt 不同字号），
+    如果只要求"上一个 span 以数字结尾"，这个半截的 2 就会被当成一个数
+    的结束，空格插进去变成 "2 7,383.33" —— 一个真实的数被劈成两个。
     """
     out = ""
     for s in spans:
         t = s.get("text", "")
-        if out and t:
-            glue = ((_GROUPED_NUM_TAIL.search(out) and t[0].isdigit())
-                    or (out[-1].isdigit() and _GROUPED_NUM_HEAD.match(t)))
-            if glue:
-                out += " "
+        if out and t and _GROUPED_NUM_TAIL.search(out) and t[0].isdigit():
+            out += " "
         out += t
     return out
 

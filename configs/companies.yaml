@@ -25,6 +25,7 @@ companies:
   - key: pingan                 # 用于文件名前缀，全小写英文/拼音
     company: 中国平安
     company_full: 中国平安保险（集团）股份有限公司
+    aliases: ["中国平安", "平安集团", "平安保险", "平安"]
     market: A+H
     exchange: 上海证券交易所 / 香港交易所
     stock_codes: ["601318.SH", "2318.HK"]
@@ -47,107 +48,163 @@ companies:
   - key: china_life
     company: 中国人寿
     company_full: 中国人寿保险股份有限公司
+    aliases: ["中国人寿", "国寿", "人寿"]
     market: A+H
     exchange: 上海证券交易所 / 香港交易所
     stock_codes: ["601628.SH", "2628.HK"]
     report_name: "2025年年度报告"
     expected_filename: "china_life_2025_annual.pdf"
     primary_source: 上交所 / 巨潮资讯网
-    source_url: ""
-    verified: false
-
+    source_url: "http://static.cninfo.com.cn/finalpage/2026-03-26/1225030448.PDF"
+    verified: true
+    source_title: "中国人寿2025年年度报告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "575a833fd7b83ad3568483273645236eddb751a92ab89f7e1c09105d92cedb27"
+    page_count: 228
+    file_size_bytes: 5031381
+    verified_note: "来源：巨潮资讯网（证监会指定信息披露平台），公告《中国人寿2025年年度报告》；文件可打开、页数与正文公司名已核对"
   - key: cpic
     company: 中国太保
     company_full: 中国太平洋保险（集团）股份有限公司
+    aliases: ["中国太保", "太保", "中国太平洋保险", "太平洋保险"]
     market: A+H
     exchange: 上海证券交易所 / 香港交易所
     stock_codes: ["601601.SH", "2601.HK"]
     report_name: "2025年年度报告"
     expected_filename: "cpic_2025_annual.pdf"
     primary_source: 上交所 / 巨潮资讯网
-    source_url: ""
-    verified: false
-
+    source_url: "http://static.cninfo.com.cn/finalpage/2026-03-27/1225035569.PDF"
+    verified: true
+    source_title: "中国太保2025年年度报告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "3787b6a6ec1bf480be2092e7bae156bd0f1d1b7f9f28bd9226d038951c788dee"
+    page_count: 310
+    file_size_bytes: 13107566
+    verified_note: "来源：巨潮资讯网（证监会指定信息披露平台），公告《中国太保2025年年度报告》；文件可打开、页数与正文公司名已核对"
   - key: picc
     company: 中国人保
     company_full: 中国人民保险集团股份有限公司
+    aliases: ["中国人保", "中国人民保险集团", "人保集团"]
     market: A+H
     exchange: 上海证券交易所 / 香港交易所
     stock_codes: ["601319.SH", "1339.HK"]
-    report_name: "2025年年度报告"
+    report_name: "2025年年度報告（H股）"
     expected_filename: "picc_2025_annual.pdf"
-    primary_source: 上交所 / 巨潮资讯网
-    source_url: ""
-    verified: false
-
+    primary_source: 港交所披露易 HKEXnews（H股年报）
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800675_c.pdf"
+    verified: true
+    source_title: "二零二五年年度報告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "4b13d20d15f5ad809eec40d9132bac0cf0f82aa636f7fd881b4d63bb8434c3c7"
+    page_count: 335
+    file_size_bytes: 8436794
+    verified_note: "来源：香港交易所披露易，公告《二零二五年年度報告》（1339.HK，2026-04-28）"
+    extraction_note: "原 A 股年报（巨潮 sha256 c8e5ed54…）278 页只有 175 个数字字符，财务报表数字被转为矢量轮廓，PyMuPDF 与 pdfminer 两个引擎均提取不到，且人保官网发布的是同一文件（字节完全相同）。2026-09-28 改用港交所披露易发布的 H 股年报：335 页，36,913 个数字，关键财务报表数字全部可提取。**注意口径为香港财务报告准则(HKFRS)**，与 A 股年报(CAS)存在列报差异（如资产总计 2,027,592 vs 2,027,683 百万元）。重新抓取时勿用 --force，否则会被 A 股版覆盖。"
   - key: new_china_life
     company: 新华保险
     company_full: 新华人寿保险股份有限公司
+    aliases: ["新华保险", "新华人寿", "新华"]
     market: A+H
     exchange: 上海证券交易所 / 香港交易所
     stock_codes: ["601336.SH", "1336.HK"]
     report_name: "2025年年度报告"
     expected_filename: "new_china_life_2025_annual.pdf"
     primary_source: 上交所 / 巨潮资讯网
-    source_url: ""
-    verified: false
-
+    source_url: "http://static.cninfo.com.cn/finalpage/2026-03-28/1225047616.PDF"
+    verified: true
+    source_title: "新华保险2025年年度报告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "4a5d6ee54dc0a351acac6d9d3ce1d0eee6d4a388c4c36c1668a35d5ffd35c528"
+    page_count: 295
+    file_size_bytes: 6694301
+    verified_note: "来源：巨潮资讯网（证监会指定信息披露平台），公告《新华保险2025年年度报告》；文件可打开、页数与正文公司名已核对"
   - key: china_taiping
     company: 中国太平
     company_full: 中国太平保险控股有限公司
+    aliases: ["中国太平", "太平保险", "太平控股"]
     market: H
     exchange: 香港交易所（披露易）
     stock_codes: ["0966.HK"]
-    report_name: "2025年報"
+    report_name: "2025年年度報告"
     expected_filename: "china_taiping_2025_annual.pdf"
     primary_source: 港交所披露易 HKEXnews
-    source_url: ""
-    verified: false
-
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800581_c.pdf"
+    verified: true
+    source_title: "2025年年報"
+    downloaded_at: "2026-09-28"
+    file_sha256: "811778ea5ad75433d220500b1741eec092d9c817184309b37324604a47f7edce"
+    page_count: 373
+    file_size_bytes: 3856068
+    verified_note: "来源：香港交易所披露易 HKEXnews，公告《2025年年報》；文件可打开、页数与正文公司名已核对"
   - key: china_re
     company: 中国再保险
     company_full: 中国再保险（集团）股份有限公司
+    aliases: ["中国再保险", "中再集团", "中再"]
     market: H
     exchange: 香港交易所（披露易）
     stock_codes: ["1508.HK"]
-    report_name: "2025年報"
+    report_name: "2025年年度報告"
     expected_filename: "china_re_2025_annual.pdf"
     primary_source: 港交所披露易 HKEXnews
-    source_url: ""
-    verified: false
-
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0429/2026042901793_c.pdf"
+    verified: true
+    source_title: "二O二五年年度報告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "cfcd25105c0573e5d2c0e9dccd5deb9cf5ad5ea7528afe4a851b852e74f3c1a9"
+    page_count: 370
+    file_size_bytes: 8205754
+    verified_note: "来源：香港交易所披露易 HKEXnews，公告《二O二五年年度報告》；文件可打开、页数与正文公司名已核对"
   - key: sunshine
     company: 阳光保险
     company_full: 阳光保险集团股份有限公司
+    aliases: ["阳光保险", "阳光保险集团"]
     market: H
     exchange: 香港交易所（披露易）
     stock_codes: ["6963.HK"]
-    report_name: "2025年報"
+    report_name: "2025年年度報告"
     expected_filename: "sunshine_2025_annual.pdf"
     primary_source: 港交所披露易 HKEXnews
-    source_url: ""
-    verified: false
-
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0427/2026042701602_c.pdf"
+    verified: true
+    source_title: "2025年度報告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "04ec5cf39c1e1d1d8b7522f87c4f32cb87d524071a9368d82949885942385198"
+    page_count: 290
+    file_size_bytes: 10940507
+    verified_note: "来源：香港交易所披露易 HKEXnews，公告《2025年度報告》；文件可打开、页数与正文公司名已核对"
   - key: zhongan
     company: 众安在线
     company_full: 众安在线财产保险股份有限公司
+    aliases: ["众安在线", "众安保险", "众安"]
     market: H
     exchange: 香港交易所（披露易）
     stock_codes: ["6060.HK"]
-    report_name: "2025年報"
+    report_name: "2025年年度報告"
     expected_filename: "zhongan_2025_annual.pdf"
     primary_source: 港交所披露易 HKEXnews
-    source_url: ""
-    verified: false
-
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042803176_c.pdf"
+    verified: true
+    source_title: "2025年度報告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "ea8c839b7f9fe18fc0beb7e57f49c968315b6d346f7341212353cb9ed97f2331"
+    page_count: 187
+    file_size_bytes: 9420084
+    verified_note: "来源：香港交易所披露易 HKEXnews，公告《2025年度報告》；文件可打开、页数与正文公司名已核对"
   - key: picc_pc
     company: 中国财险
     company_full: 中国人民财产保险股份有限公司
+    aliases: ["中国财险", "人保财险", "中国人民财产保险", "人保财"]
     market: H
     exchange: 香港交易所（披露易）
     stock_codes: ["2328.HK"]
-    report_name: "2025年報"
+    report_name: "2025年年度報告"
     expected_filename: "picc_pc_2025_annual.pdf"
     primary_source: 港交所披露易 HKEXnews
-    source_url: ""
-    verified: false
+    source_url: "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0401/2026040101641_c.pdf"
+    verified: true
+    source_title: "2025年度報告"
+    downloaded_at: "2026-09-28"
+    file_sha256: "36363db8e934dcfea8124a5b9450f7a26bf13be949cb28254b51873328a126f2"
+    page_count: 276
+    file_size_bytes: 4816401
+    verified_note: "来源：香港交易所披露易 HKEXnews，公告《2025年度報告》；文件可打开、页数与正文公司名已核对"

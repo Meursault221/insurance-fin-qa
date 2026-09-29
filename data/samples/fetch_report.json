@@ -1,0 +1,119 @@
+[
+  {
+    "key": "china_life",
+    "company": "中国人寿",
+    "source": "cninfo",
+    "status": "OK",
+    "url": "http://static.cninfo.com.cn/finalpage/2026-03-26/1225030448.PDF",
+    "title": "中国人寿2025年年度报告",
+    "dest": "data\\raw\\china_life_2025_annual.pdf",
+    "detail": "5,031,381 字节",
+    "sha256": "575a833fd7b83ad3568483273645236eddb751a92ab89f7e1c09105d92cedb27",
+    "size_bytes": 5031381
+  },
+  {
+    "key": "cpic",
+    "company": "中国太保",
+    "source": "cninfo",
+    "status": "OK",
+    "url": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225035569.PDF",
+    "title": "中国太保2025年年度报告",
+    "dest": "data\\raw\\cpic_2025_annual.pdf",
+    "detail": "13,107,566 字节",
+    "sha256": "3787b6a6ec1bf480be2092e7bae156bd0f1d1b7f9f28bd9226d038951c788dee",
+    "size_bytes": 13107566
+  },
+  {
+    "key": "picc",
+    "company": "中国人保",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800675_c.pdf",
+    "title": "二零二五年年度報告",
+    "dest": "data\\raw\\picc_2025_annual.pdf",
+    "detail": "8,436,794 字节",
+    "sha256": "4b13d20d15f5ad809eec40d9132bac0cf0f82aa636f7fd881b4d63bb8434c3c7",
+    "size_bytes": 8436794,
+    "superseded": {
+      "source": "cninfo",
+      "url": "http://static.cninfo.com.cn/finalpage/2026-03-27/1225037867.PDF",
+      "title": "中国人保2025年年度报告",
+      "detail": "12,461,533 字节",
+      "sha256": "c8e5ed5435197ff0c056ee9ad6aa630b6e7a655a47ba61e18d352e89745791fe",
+      "size_bytes": 12461533,
+      "reason": "A 股年报的财务报表数字被转为矢量轮廓，文字层取不到数字（PyMuPDF 与 pdfminer 均提取不到），2026-09-28 换为 H 股年报"
+    }
+  },
+  {
+    "key": "new_china_life",
+    "company": "新华保险",
+    "source": "cninfo",
+    "status": "OK",
+    "url": "http://static.cninfo.com.cn/finalpage/2026-03-28/1225047616.PDF",
+    "title": "新华保险2025年年度报告",
+    "dest": "data\\raw\\new_china_life_2025_annual.pdf",
+    "detail": "6,694,301 字节",
+    "sha256": "4a5d6ee54dc0a351acac6d9d3ce1d0eee6d4a388c4c36c1668a35d5ffd35c528",
+    "size_bytes": 6694301
+  },
+  {
+    "key": "china_taiping",
+    "company": "中国太平",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042800581_c.pdf",
+    "title": "2025年年報",
+    "dest": "data\\raw\\china_taiping_2025_annual.pdf",
+    "detail": "3,856,068 字节",
+    "sha256": "811778ea5ad75433d220500b1741eec092d9c817184309b37324604a47f7edce",
+    "size_bytes": 3856068
+  },
+  {
+    "key": "china_re",
+    "company": "中国再保险",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0429/2026042901793_c.pdf",
+    "title": "二O二五年年度報告",
+    "dest": "data\\raw\\china_re_2025_annual.pdf",
+    "detail": "8,205,754 字节",
+    "sha256": "cfcd25105c0573e5d2c0e9dccd5deb9cf5ad5ea7528afe4a851b852e74f3c1a9",
+    "size_bytes": 8205754
+  },
+  {
+    "key": "sunshine",
+    "company": "阳光保险",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0427/2026042701602_c.pdf",
+    "title": "2025年度報告",
+    "dest": "data\\raw\\sunshine_2025_annual.pdf",
+    "detail": "10,940,507 字节",
+    "sha256": "04ec5cf39c1e1d1d8b7522f87c4f32cb87d524071a9368d82949885942385198",
+    "size_bytes": 10940507
+  },
+  {
+    "key": "zhongan",
+    "company": "众安在线",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0428/2026042803176_c.pdf",
+    "title": "2025年度報告",
+    "dest": "data\\raw\\zhongan_2025_annual.pdf",
+    "detail": "9,420,084 字节",
+    "sha256": "ea8c839b7f9fe18fc0beb7e57f49c968315b6d346f7341212353cb9ed97f2331",
+    "size_bytes": 9420084
+  },
+  {
+    "key": "picc_pc",
+    "company": "中国财险",
+    "source": "hkexnews",
+    "status": "OK",
+    "url": "https://www1.hkexnews.hk/listedco/listconews/sehk/2026/0401/2026040101641_c.pdf",
+    "title": "2025年度報告",
+    "dest": "data\\raw\\picc_pc_2025_annual.pdf",
+    "detail": "4,816,401 字节",
+    "sha256": "36363db8e934dcfea8124a5b9450f7a26bf13be949cb28254b51873328a126f2",
+    "size_bytes": 4816401
+  }
+]

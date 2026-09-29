@@ -1,30 +1,59 @@
 # ============================================================
-# 第二阶段（混合检索 + 问答页面）依赖 —— 现在先不要装
+# 第二阶段（BM25 + 向量混合检索）依赖
 #
+#   pip install --index-url https://download.pytorch.org/whl/cpu torch
 #   pip install -r requirements-retrieval.txt
 #
-# ⚠️ 这个文件会拉 PyTorch，约 2GB。国内网络建议先配镜像源：
-#   pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+# ⚠️ 第一行不能省。Windows 上 PyPI 默认给的 torch wheel 是 **CUDA 版**，
+#    约 2.4GB，而本项目的向量模型跑在 CPU 上（7500 条 chunk 编码约 1~2 分钟，
+#    检索是纯矩阵乘法，用不到 GPU）。走 PyTorch 官方 CPU 源只要约 200MB。
+#    先装 CPU 版 torch 之后，下面再写 torch 也没有依赖会把它换回 CUDA 版。
 # ============================================================
 
 # --- BM25 稀疏检索 ---
-jieba>=0.42.1              # 中文分词
-rank-bm25>=0.2.2           # BM25 实现
+jieba>=0.42.1              # 中文分词（BM25 用）
+zhconv>=1.4                # 简繁归一（纯 Python，很小）
+#
+# zhconv 不能省。10 家里有 5 家是港股年报（中国人保、中国太平、中国再保险、
+# 中国财险、众安在线），正文是繁体，占全部 chunk 的 52%。不转换的话，
+# 简体提问"总资产"永远匹配不上原文的"總資產"，这几家会像坏掉一样查不到。
+# 详见 src/tokenize.py 开头的说明。
 
 # --- 向量检索 ---
-sentence-transformers>=3.0 # 中文 embedding 模型（会拉 torch）
-faiss-cpu>=1.8.0           # 向量索引（纯 CPU 版；不需要 GPU）
-numpy>=1.26
+# torch 由上面那行单独安装（CPU 版），这里不重复声明
+sentence-transformers>=3.0 # 中文 embedding 模型
+numpy>=1.26                # 向量存盘 + 余弦相似度
+
+# 注意：**不需要 faiss**。本项目 7500 条 chunk × 512 维 ≈ 15MB，
+# 直接 numpy 矩阵点积（一次 7500×512 的乘法）在 CPU 上不到 1ms，
+# 比维护一个 faiss 索引更省事，也少一个要编译的依赖。
+
+# 注意：**不需要 rank-bm25**。BM25 是自己实现的（src/bm25.py），原因见该文件
+# 开头的注释 —— 需要在打分前按公司做布尔过滤，通用库不提供这个钩子。
 
 # 建议的中文向量模型（首次运行会自动下载）：
-#   - BAAI/bge-large-zh-v1.5        （效果好，约 1.3GB）
-#   - BAAI/bge-small-zh-v1.5        （轻量，约 95MB，先用这个跑通）
-#   - moka-ai/m3e-base              （金融语料上表现也不错）
+#   - BAAI/bge-small-zh-v1.5   （本项目在用，512 维，约 95MB）
+#   - BAAI/bge-large-zh-v1.5   （效果更好，约 1.3GB，CPU 编码会慢很多）
+#   - moka-ai/m3e-base         （金融语料上表现也不错）
+#
+# 国内的网络问题：HuggingFace 可能连不上，可以先设镜像
+#   set HF_ENDPOINT=https://hf-mirror.com      (Windows CMD)
+#   export HF_ENDPOINT=https://hf-mirror.com   (Git Bash)
 
-# --- 问答页面：二选一 ---
-streamlit>=1.35            # 方案 A：最省事，一个文件就是一个页面
-# fastapi>=0.115           # 方案 B：要自己写前端
-# uvicorn[standard]>=0.30
+# --- 问答页面（第三阶段）---
+streamlit>=1.35            # web/app.py。一个文件就是一个页面，不用写前端
 
-# --- 可选：接大模型生成答案（不是必须，纯检索也能展示来源）---
+# --- 接大模型生成答案（第三阶段）---
+#
+# **不需要任何 SDK。** src/llm.py 用标准库 urllib 直接发 HTTP：
+# Anthropic 是 POST {base}/v1/messages，OpenAI 兼容是 POST {base}/chat/completions，
+# 两边都只是"发一段 JSON、取回一段 JSON"。少一个依赖少一份麻烦，
+# 而且 DeepSeek / 通义 / 智谱 / Kimi / Ollama / vLLM 全都提供 OpenAI 兼容接口，
+# 换一个 LLM_BASE_URL 就能用，不用换代码也不用重装包。
+#
+# 将来要流式输出、重试、tool use 再换官方 SDK：
 # anthropic>=0.40
+# openai>=1.40
+
+# key 放在项目根目录的 .env 里（模板见 .env.example），不要写进代码。
+# 没有 key 也能跑：页面照样显示检索结果和引用，只是不生成答案正文。

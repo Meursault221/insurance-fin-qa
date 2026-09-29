@@ -8,6 +8,13 @@ data/chunks/*
 !data/chunks/.gitkeep
 data/samples/*
 !data/samples/.gitkeep
+# 这三份是产出物（很小），要入库：来源留痕 + 批量校验报告 + 统一来源清单
+!data/samples/phase1_batch_report.json
+!data/samples/fetch_report.json
+!data/samples/final_provenance.json
+
+# --- 临时目录：下载中转、探测脚本、日志，不入库 ---
+_scratch/
 
 # --- 索引文件：可由脚本重建，不入库 ---
 index/**/*
@@ -15,6 +22,12 @@ index/**/*
 
 # --- 第二阶段产物 ---
 web/static/screenshots/*.png
+
+# --- 密钥：绝对不要入库 ---
+# .env 里放的是 API key。要提交的是 .env.example（模板，没有真 key）。
+.env
+.env.local
+*.env
 
 # --- Python ---
 __pycache__/

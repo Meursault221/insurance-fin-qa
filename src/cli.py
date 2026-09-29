@@ -247,11 +247,92 @@ def cmd_preview(args) -> int:
     return 0
 
 
+def cmd_search(args) -> int:
+    """第二阶段：在已建好的索引上检索，不做答案生成。"""
+    from .retriever import MODE_ZH, Retriever, format_results
+
+    r = Retriever.load()
+    detected = r.detect_companies(args.query)
+    out = r.search(args.query, args.top_k, company=args.company,
+                   mode=args.mode, auto_company=not args.no_auto_company)
+
+    print(f"查询：{args.query}")
+    print(f"模式：{MODE_ZH.get(args.mode, args.mode)}   top-{args.top_k}")
+    if args.company:
+        print(f"公司：{args.company}（手动指定）")
+    elif detected:
+        shown = "、".join(detected)
+        note = "自动识别，已在公司内过滤" if len(detected) == 1 else "识别到多家，不做过滤"
+        print(f"公司：{shown}（{note}）")
+    else:
+        print("公司：未识别到，全库检索")
+    print("-" * 70)
+    if not out:
+        print("（没有召回任何内容）")
+        return 0
+    print(format_results(out, show_text=args.show_text))
+    return 0
+
+
+def cmd_ask(args) -> int:
+    """第三阶段：检索 → 大模型 → 带引用的答案。
+
+    和 `search` 的区别：`search` 只回原文片段，`ask` 会调用大模型生成答案。
+    没配 API key 时不会报错，退化成只显示检索结果 —— 闭环还是通的。
+    """
+    from .llm import LLMConfig, load_env_file
+    from .qa import answer_question
+    from .retriever import MODE_ZH
+
+    load_env_file()                     # 项目根目录的 .env（有就用，没有就算了）
+    cfg = LLMConfig.from_env()
+    res = answer_question(args.query, top_k=args.top_k, mode=args.mode,
+                          company=args.company)
+
+    print(f"问题：{args.query}")
+    print(f"模式：{MODE_ZH.get(args.mode, args.mode)}   top-{args.top_k}")
+    if res.detected_companies:
+        print("公司：" + "、".join(res.detected_companies))
+    if res.top_cosine:
+        print(f"最高相似度：{res.top_cosine:.3f}")
+    if not cfg.enabled:
+        print("大模型：未配置（只显示检索结果与引用，不生成答案）")
+    else:
+        print(f"大模型：{cfg.provider} / {cfg.model}")
+
+    print("-" * 70)
+    print(res.answer if res.answer else "（没有生成答案）")
+    for note in res.notes:
+        print(f"· {note}")
+
+    if not res.sources:
+        return 0
+
+    print("-" * 70)
+    print(f"引用来源（{len(res.sources)} 条，* = 答案正文引用到的）：")
+    for i, hit in enumerate(res.sources, start=1):
+        ch = hit.chunk
+        mark = "*" if i in res.cited_indexes else " "
+        print(f"\n{mark}[{i}] {ch.citation().replace(chr(10), '｜')}")
+        print(f"     得分 {hit.score:.4f}｜{MODE_ZH.get(hit.source, hit.source)}"
+              f"｜{ch.block_type}｜chunk_id={ch.chunk_id}")
+        if args.show_text:
+            text = " ".join(ch.text.split())
+            print("     " + text[: args.show_text]
+                  + (" …" if len(text) > args.show_text else ""))
+    if args.show_materials and res.materials:
+        print("-" * 70)
+        print("实际送给大模型的材料（截断后）：")
+        for m in res.materials:
+            print(f"\n{m.header()}\n{m.text}")
+    return 0
+
+
 # ==========================================================================
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog="python -m src.cli",
-        description="上市保险公司财报问答知识库 —— 第一阶段：PDF 解析与切分",
+        description="上市保险公司财报问答知识库",
     )
     sub = p.add_subparsers(dest="cmd", required=True)
 
@@ -295,6 +376,31 @@ def build_parser() -> argparse.ArgumentParser:
     sp.add_argument("path", help="chunks JSONL 路径")
     sp.add_argument("--limit", type=int, default=5)
     sp.set_defaults(func=cmd_preview)
+
+    sp = sub.add_parser("search", help="检索年报内容（BM25 / 向量 / 混合）")
+    sp.add_argument("query", help="问题或关键词")
+    sp.add_argument("-k", "--top-k", type=int, default=5)
+    sp.add_argument("--mode", default="hybrid",
+                    choices=["bm25", "vector", "hybrid"])
+    sp.add_argument("--company", help="限定公司 key，如 pingan")
+    sp.add_argument("--no-auto-company", action="store_true",
+                    help="不从问题里自动识别公司（默认会识别并过滤）")
+    sp.add_argument("--show-text", type=int, default=0,
+                    help="附带打印正文前 N 个字符")
+    sp.set_defaults(func=cmd_search)
+
+    sp = sub.add_parser("ask", help="提问并生成带引用的答案（第三阶段，需配 API key）")
+    sp.add_argument("query", help="问题")
+    sp.add_argument("-k", "--top-k", type=int, default=5,
+                    help="送给大模型的材料条数")
+    sp.add_argument("--mode", default="hybrid",
+                    choices=["bm25", "vector", "hybrid"])
+    sp.add_argument("--company", help="限定公司 key，如 pingan")
+    sp.add_argument("--show-text", type=int, default=0,
+                    help="引用区附带打印正文前 N 个字符")
+    sp.add_argument("--show-materials", action="store_true",
+                    help="打印实际送给大模型的材料（调试用）")
+    sp.set_defaults(func=cmd_ask)
 
     return p
 

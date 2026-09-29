@@ -1,0 +1,372 @@
+[
+  {
+    "key": "pingan",
+    "company": "中国平安",
+    "pdf_path": "data\\raw\\pingan_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\pingan_2025_annual.json",
+    "chunk_path": "data\\chunks\\pingan_2025_annual.jsonl",
+    "page_count": 370,
+    "pdf_page_count": 370,
+    "text_chars": 195516,
+    "chunk_count": 901,
+    "chunk_chars": 414906,
+    "pages_covered": 368,
+    "missing_pages": [
+      1,
+      370
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      119,
+      129
+    ],
+    "table_count": 182,
+    "table_quality": {
+      "text": 63,
+      "numeric": 119
+    },
+    "warnings": [
+      "2 页没有任何 chunk（可能是纯图片页），例：[1, 370]"
+    ],
+    "status": "WARN",
+    "digit_chars": 23064,
+    "digit_density": 0.118,
+    "vectorized_pages": []
+  },
+  {
+    "key": "china_life",
+    "company": "中国人寿",
+    "pdf_path": "data\\raw\\china_life_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\china_life_2025_annual.json",
+    "chunk_path": "data\\chunks\\china_life_2025_annual.jsonl",
+    "page_count": 228,
+    "pdf_page_count": 228,
+    "text_chars": 79673,
+    "chunk_count": 561,
+    "chunk_chars": 283387,
+    "pages_covered": 227,
+    "missing_pages": [
+      227
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [
+      228
+    ],
+    "table_count": 167,
+    "table_quality": {
+      "text": 65,
+      "numeric": 102
+    },
+    "warnings": [
+      "1 页没有任何 chunk（可能是纯图片页），例：[227]"
+    ],
+    "status": "WARN",
+    "digit_chars": 7792,
+    "digit_density": 0.0978,
+    "vectorized_pages": []
+  },
+  {
+    "key": "cpic",
+    "company": "中国太保",
+    "pdf_path": "data\\raw\\cpic_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\cpic_2025_annual.json",
+    "chunk_path": "data\\chunks\\cpic_2025_annual.jsonl",
+    "page_count": 310,
+    "pdf_page_count": 310,
+    "text_chars": 91703,
+    "chunk_count": 730,
+    "chunk_chars": 464431,
+    "pages_covered": 304,
+    "missing_pages": [
+      1,
+      29,
+      30,
+      73,
+      74,
+      143
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [
+      310
+    ],
+    "table_count": 248,
+    "table_quality": {
+      "text": 120,
+      "numeric": 128
+    },
+    "warnings": [
+      "6 页没有任何 chunk（可能是纯图片页），例：[1, 29, 30, 73, 74, 143]",
+      "1 个 chunk 的 section 为空（0.1%）"
+    ],
+    "status": "WARN",
+    "digit_chars": 8735,
+    "digit_density": 0.0953,
+    "vectorized_pages": []
+  },
+  {
+    "key": "picc",
+    "company": "中国人保",
+    "pdf_path": "data\\raw\\picc_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\picc_2025_annual.json",
+    "chunk_path": "data\\chunks\\picc_2025_annual.jsonl",
+    "page_count": 335,
+    "pdf_page_count": 335,
+    "text_chars": 130443,
+    "chunk_count": 695,
+    "chunk_chars": 320305,
+    "pages_covered": 334,
+    "missing_pages": [
+      335
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [],
+    "table_count": 196,
+    "table_quality": {
+      "numeric": 114,
+      "text": 82
+    },
+    "warnings": [
+      "1 页没有任何 chunk（可能是纯图片页），例：[335]"
+    ],
+    "status": "WARN",
+    "digit_chars": 9091,
+    "digit_density": 0.0697,
+    "vectorized_pages": []
+  },
+  {
+    "key": "new_china_life",
+    "company": "新华保险",
+    "pdf_path": "data\\raw\\new_china_life_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\new_china_life_2025_annual.json",
+    "chunk_path": "data\\chunks\\new_china_life_2025_annual.jsonl",
+    "page_count": 295,
+    "pdf_page_count": 295,
+    "text_chars": 93996,
+    "chunk_count": 738,
+    "chunk_chars": 297518,
+    "pages_covered": 295,
+    "missing_pages": [],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [
+      1,
+      295
+    ],
+    "table_count": 202,
+    "table_quality": {
+      "numeric": 122,
+      "text": 80
+    },
+    "warnings": [],
+    "status": "OK",
+    "digit_chars": 6949,
+    "digit_density": 0.0739,
+    "vectorized_pages": []
+  },
+  {
+    "key": "china_taiping",
+    "company": "中国太平",
+    "pdf_path": "data\\raw\\china_taiping_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\china_taiping_2025_annual.json",
+    "chunk_path": "data\\chunks\\china_taiping_2025_annual.jsonl",
+    "page_count": 373,
+    "pdf_page_count": 373,
+    "text_chars": 355610,
+    "chunk_count": 1352,
+    "chunk_chars": 1469955,
+    "pages_covered": 371,
+    "missing_pages": [
+      1,
+      373
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [],
+    "table_count": 367,
+    "table_quality": {
+      "numeric": 83,
+      "text": 284
+    },
+    "warnings": [
+      "2 页没有任何 chunk（可能是纯图片页），例：[1, 373]",
+      "10 个 chunk 的 section 为空（0.7%）"
+    ],
+    "status": "WARN",
+    "digit_chars": 12273,
+    "digit_density": 0.0345,
+    "vectorized_pages": []
+  },
+  {
+    "key": "china_re",
+    "company": "中国再保险",
+    "pdf_path": "data\\raw\\china_re_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\china_re_2025_annual.json",
+    "chunk_path": "data\\chunks\\china_re_2025_annual.jsonl",
+    "page_count": 370,
+    "pdf_page_count": 370,
+    "text_chars": 119130,
+    "chunk_count": 739,
+    "chunk_chars": 347599,
+    "pages_covered": 363,
+    "missing_pages": [
+      6,
+      18,
+      66,
+      134,
+      363,
+      364,
+      370
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [],
+    "table_count": 241,
+    "table_quality": {
+      "text": 92,
+      "numeric": 149
+    },
+    "warnings": [
+      "7 页没有任何 chunk（可能是纯图片页），例：[6, 18, 66, 134, 363, 364, 370]"
+    ],
+    "status": "WARN",
+    "digit_chars": 15377,
+    "digit_density": 0.1291,
+    "vectorized_pages": []
+  },
+  {
+    "key": "sunshine",
+    "company": "阳光保险",
+    "pdf_path": "data\\raw\\sunshine_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\sunshine_2025_annual.json",
+    "chunk_path": "data\\chunks\\sunshine_2025_annual.jsonl",
+    "page_count": 290,
+    "pdf_page_count": 290,
+    "text_chars": 49918,
+    "chunk_count": 640,
+    "chunk_chars": 278178,
+    "pages_covered": 289,
+    "missing_pages": [
+      290
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [],
+    "table_count": 235,
+    "table_quality": {
+      "numeric": 86,
+      "text": 149
+    },
+    "warnings": [
+      "1 页没有任何 chunk（可能是纯图片页），例：[290]"
+    ],
+    "status": "WARN",
+    "digit_chars": 3929,
+    "digit_density": 0.0787,
+    "vectorized_pages": []
+  },
+  {
+    "key": "zhongan",
+    "company": "众安在线",
+    "pdf_path": "data\\raw\\zhongan_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\zhongan_2025_annual.json",
+    "chunk_path": "data\\chunks\\zhongan_2025_annual.jsonl",
+    "page_count": 187,
+    "pdf_page_count": 187,
+    "text_chars": 51334,
+    "chunk_count": 490,
+    "chunk_chars": 237705,
+    "pages_covered": 184,
+    "missing_pages": [
+      1,
+      2,
+      187
+    ],
+    "missing_digits": {
+      "pages_affected": 0,
+      "count": 0,
+      "samples": []
+    },
+    "garbled_pages": [],
+    "table_count": 162,
+    "table_quality": {
+      "numeric": 65,
+      "text": 97
+    },
+    "warnings": [
+      "3 页没有任何 chunk（可能是纯图片页），例：[1, 2, 187]",
+      "2 个 chunk 的 section 为空（0.4%）"
+    ],
+    "status": "WARN",
+    "digit_chars": 4452,
+    "digit_density": 0.0867,
+    "vectorized_pages": []
+  },
+  {
+    "key": "picc_pc",
+    "company": "中国财险",
+    "pdf_path": "data\\raw\\picc_pc_2025_annual.pdf",
+    "extracted_path": "data\\extracted\\picc_pc_2025_annual.json",
+    "chunk_path": "data\\chunks\\picc_pc_2025_annual.jsonl",
+    "page_count": 276,
+    "pdf_page_count": 276,
+    "text_chars": 116627,
+    "chunk_count": 661,
+    "chunk_chars": 252506,
+    "pages_covered": 276,
+    "missing_pages": [],
+    "missing_digits": {
+      "pages_affected": 1,
+      "count": 5,
+      "samples": [
+        "第276页 丢失 ['0', '1', '2', '8', '9']"
+      ]
+    },
+    "garbled_pages": [],
+    "table_count": 159,
+    "table_quality": {
+      "numeric": 117,
+      "text": 42
+    },
+    "warnings": [
+      "1 页（0.4%）存在数字未进入 chunk，共 5 个"
+    ],
+    "status": "WARN",
+    "digit_chars": 10137,
+    "digit_density": 0.0869,
+    "vectorized_pages": []
+  }
+]
